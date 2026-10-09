@@ -1,4 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ChessMatch</title><link rel="stylesheet" href="css/style.css"></head>
-<body><header class="site-header"><div class="brand"><span class="brand-icon">♞</span><span class="brand-name">ChessMatch</span></div><p class="tagline">Entdecke deine Chess.com-Statistiken.</p></header><main class="container"><section class="search-panel"><div class="mode-switch"><button id="modeSingle" class="mode-btn active">Einzelspieler</button><button id="modeCompare" class="mode-btn">Spieler vergleichen</button></div><form id="searchForm" novalidate><div class="input-row"><div class="input-group"><input id="username1" type="text" placeholder="Benutzername" maxlength="64"></div><div class="input-group input-group--hidden" id="secondInputGroup"><input id="username2" type="text" placeholder="Zweiter Benutzername" maxlength="64"></div><button type="submit" class="btn-primary" id="submitBtn"><span class="btn-label">Analysieren</span></button></div></form><p class="status" id="status"></p></section><section id="results" class="results"></section></main><footer class="site-footer"><p>Daten: öffentliche Chess.com-API · Keine Anmeldung nötig</p></footer><script src="js/app.js"></script></body></html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChessMatch – Entdecke deine Chess.com-Statistiken</title>
+  <meta name="description" content="Analysiere öffentliche Chess.com-Statistiken: Ratings, Partien und Spieler-DNA.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bg-board" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="brand"><span class="brand-icon">♞</span><span class="brand-name">ChessMatch</span></div>
+    <p class="tagline">„Entdecke deine Chess.com-Statistiken.“</p>
+  </header>
+  <main class="container">
+    <section class="search-panel">
+      <div class="mode-switch" role="tablist">
+        <button id="modeSingle" class="mode-btn active" role="tab" aria-selected="true">Einzelspieler</button>
+        <button id="modeCompare" class="mode-btn" role="tab" aria-selected="false">Spieler vergleichen</button>
+      </div>
+      <form id="searchForm" novalidate>
+        <div class="input-row">
+          <div class="input-group"><input id="username1" type="text" placeholder="Chess.com-Benutzername" autocomplete="off" spellcheck="false" maxlength="64"></div>
+          <div class="input-group input-group--hidden" id="secondInputGroup"><input id="username2" type="text" placeholder="Zweiter Chess.com-Benutzername" autocomplete="off" spellcheck="false" maxlength="64"></div>
+          <button type="submit" class="btn-primary" id="submitBtn"><span class="btn-label">Analysieren</span><span class="btn-spinner"></span></button>
+        </div>
+      </form>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </section>
+    <section id="results" class="results"></section>
+  </main>
+  <footer class="site-footer">
+    <p>Daten: öffentliche <a href="https://www.chess.com/pub" target="_blank" rel="noopener">Chess.com-API</a> · Keine Anmeldung nötig</p>
+    <p class="disclaimer">Spieler-DNA und der Statistik-Score (0–100) sind eigene Auswertungen von ChessMatch und <strong>keine</strong> offiziellen Chess.com-Wertungen.</p>
+  </footer>
+  <svg width="0" height="0" aria-hidden="true"><defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c5cff"/><stop offset="100%" stop-color="#4ade80"/></linearGradient></defs></svg>
+  <script src="js/app.js"></script>
+</body>
+</html>
