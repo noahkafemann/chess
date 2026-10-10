@@ -27,7 +27,7 @@
   function ld(b){ btn.disabled=b; btn.classList.toggle("loading",b); lbl.textContent=b?"Laden …":(cmp?"Vergleichen":"Analysieren"); }
 
   function j(u){
-    return fetch(u,{headers:{"User-Agent":"ChessMatch/1.0 (https://example.com)"}}).then(function(r){
+    return fetch(u,{mode:"cors"}).then(function(r){
       if(r.status===404) throw {kind:"nf"};
       if(r.status===429) throw {kind:"rl"};
       if(!r.ok) throw {kind:"api",s:r.status};
@@ -101,11 +101,11 @@
     return tg;
   }
 
-  function flag(c){ if(!c||c.length!==2)return""; var s=""; var map="🇦🇧🇨🇩🇪🇫🇬🇭🇮🇯🇰🇱🇲🇳🇴🇵🇶🇷🇸🇹🇺🇻🇼🇽🇾🇿"; for(var i=0;i<2;i++){ var cp=0x1F1E6+(c.toUpperCase().charCodeAt(i)-65); if(cp>=0x1F1E6&&cp<=0x1F1FF) s+=String.fromCodePoint(cp);} return s; }
+  function flag(c){ if(!c||c.length!==2)return""; var s=""; for(var i=0;i<2;i++){ var cp=0x1F1E6+(c.toUpperCase().charCodeAt(i)-65); if(cp>=0x1F1E6&&cp<=0x1F1FF) s+=String.fromCodePoint(cp);} return s; }
 
   function age(j){ if(!j)return null; var th=new Date(j*1000),nw=new Date(); var y=nw.getFullYear()-th.getFullYear(),mo=nw.getMonth()-th.getMonth(); if(mo<0){y--;mo+=12;} if(y<0){y=0;mo=0;} var pt=[]; if(y)pt.push(y===1?"1 Jahr":y+" Jahre"); if(mo&&y<10)pt.push(mo===1?"1 Monat":mo+" Monate"); return "seit "+th.toLocaleDateString("de-DE",{month:"long",year:"numeric"})+(pt.length?" · "+pt.join(" "):""); }
 
-  function timeAgo(ts){ if(!ts)return null; var s=Math.floor(Date.now()/1000-ts); if(s<60)return "gerade eben"; var m=Math.floor(s/60); if(m<60)return "vor "+m+(m===1?" Minute":" Minuten"); var h=Math.floor(m/60); if(h<24)return "vor "+h+(h===1?" Stunde":" Stunden"); var d=Math.floor(h/24); if(d<30)return "vor "+d+(d===1?" Tag":" Tagen"); var mo=Math.floor(d/30); if(mo<12)return "vor "+mo+(mo===1?" Monat":" Monaten"); var y=Math.floor(mo/12); return "vor "+y+(y===1?" Jahr":" Jahren"); }
+  function timeAgo(ts){ if(!ts)return null; var s=Math.floor(Date.now()/1000-ts); if(s<60)return "gerade eben"; var m=Math.floor(s/60); if(m<60)return "vor "+m+(m===1?" Minute":" Minuten"); var h=Math.floor(m/60); if(h<24)return "vor "+h+(h===1?" Stunde":" Stunden"); var d=Math.floor(h/24); if(d<30)return "vor "+d+(d===1?" Tag":" Tagen"); var mo=Math.floor(d/30); if(mo<12)return "vor "+mo+(m===1?" Monat":" Monaten"); var y=Math.floor(mo/12); return "vor "+y+(y===1?" Jahr":" Jahren"); }
 
   function card(p){
     var nm=p.n?esc(p.n):esc(p.u);
@@ -171,7 +171,7 @@
         ld(false);
         if(e.kind==="nf") set("Benutzername nicht gefunden.","error");
         else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-        else if(e.kind==="net") set("Netzwerkfehler.","error");
+        else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
         else set("API-Fehler.","error");
       });
     }else{
@@ -183,14 +183,14 @@
           ld(false);
           if(e.kind==="nf") set("Zweiter Benutzername nicht gefunden.","error");
           else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-          else if(e.kind==="net") set("Netzwerkfehler.","error");
+          else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
           else set("API-Fehler.","error");
         });
       }).catch(function(e){
         ld(false);
         if(e.kind==="nf") set("Benutzername nicht gefunden.","error");
         else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-        else if(e.kind==="net") set("Netzwerkfehler.","error");
+        else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
         else set("API-Fehler.","error");
       });
     }
