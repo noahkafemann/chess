@@ -24,10 +24,10 @@
   function set(m,t){ st.textContent=m||""; st.className="status"+(t?" status--"+t:""); }
   function esc(v){ return String(v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
   function ok(n){ return /^[A-Za-z0-9_-]{3,64}$/.test(n); }
-  function ld(b){ btn.disabled=b; btn.classList.toggle("loading",b); lbl.textContent=b?"Laden …":(cmp?"Vergleichen":"Analysieren"); }
+  function ld(b){ btn.disabled=b; btn.classList.toggle("loading",b); lbl.textContent=b?"Lade…":(cmp?"Vergleichen":"Analysieren"); }
 
   function j(u){
-    return fetch(u,{mode:"cors"}).then(function(r){
+    return fetch(u).then(function(r){
       if(r.status===404) throw {kind:"nf"};
       if(r.status===429) throw {kind:"rl"};
       if(!r.ok) throw {kind:"api",s:r.status};
@@ -160,18 +160,18 @@
   function go(){
     var n1=i1.value.trim(),n2=i2.value.trim();
     if(!n1||(cmp&&!n2)){ set(cmp?"Bitte zwei Benutzernamen eingeben.":"Bitte einen Benutzernamen eingeben.","error"); return; }
-    if(!ok(n1)||(cmp&&!ok(n2))){ set("Ungültiger Benutzername. Bitte nur Buchstaben, Zahlen, „-„ und „_“ verwenden (mind. 3).","error"); return; }
+    if(!ok(n1)||(cmp&&!ok(n2))){ set("Ungültiger Benutzername.","error"); return; }
     ld(true); set("Lade Daten von Chess.com …","info");
     if(!cmp){
       get(n1).then(function(p){
         res.innerHTML=card(p);
-        if(p.st==="closed") set("⚠️ Dieser Account ist geschlossen. Gezeigt wird der letzte öffentliche Datenstand.","info"); else set("");
+        if(p.st==="closed") set("⚠️ Account geschlossen – letzter öffentlicher Datenstand.","info"); else set("");
         anim(res); ld(false);
       }).catch(function(e){
         ld(false);
         if(e.kind==="nf") set("Benutzername nicht gefunden.","error");
         else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-        else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
+        else if(e.kind==="net") set("Netzwerkfehler. Bitte die Seite über http://localhost aufrufen (nicht file://). Prüfe Netzwerk oder CORS.","error");
         else set("API-Fehler.","error");
       });
     }else{
@@ -181,16 +181,16 @@
           set(""); anim(res); ld(false);
         }).catch(function(e){
           ld(false);
-          if(e.kind==="nf") set("Zweiter Benutzername nicht gefunden.","error");
-          else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-          else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
+          if(e.kind==="nf") set("Benutzer nicht gefunden.","error");
+          else if(e.kind==="rl") set("Zu viele Anfragen.","error");
+          else if(e.kind==="net") set("Netzwerkfehler. Bitte über http://localhost aufrufen.","error");
           else set("API-Fehler.","error");
         });
       }).catch(function(e){
         ld(false);
-        if(e.kind==="nf") set("Benutzername nicht gefunden.","error");
-        else if(e.kind==="rl") set("Zu viele Anfragen. Bitte kurz warten.","error");
-        else if(e.kind==="net") set("Netzwerkfehler. Bitte öffne die Seite über einen lokalen HTTP-Server (z. B. http://localhost:8080), nicht als file://.","error");
+        if(e.kind==="nf") set("Benutzer nicht gefunden.","error");
+        else if(e.kind==="rl") set("Zu viele Anfragen.","error");
+        else if(e.kind==="net") set("Netzwerkfehler. Bitte über http://localhost aufrufen.","error");
         else set("API-Fehler.","error");
       });
     }
